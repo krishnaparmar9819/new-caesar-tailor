@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0a0a0a">
+    <meta name="description" content="naw Caesar Tailor — bespoke men's formalwear, made with intention.">
+    <title>new Caesar Tailor | Master of Formal Wear</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        charcoal: '#0a0a0a',
+                        gold: '#d4af37',
+                        silver: '#e8e6e1'
+                    },
+                    fontFamily: {
+                        display: ['Playfair Display', 'serif'],
+                        sans: ['DM Sans', 'sans-serif']
+                    }
+                }
+            }
+        };
+    </script>
+    <link rel="stylesheet" href="https://unpkg.com/lenis@1.1.20/dist/lenis.css">
+
+    <style>
+        :root {
+            --black: #0a0a0a;
+            --gold: #d4af37;
+            --silver: #e8e6e1;
+            --muted: rgba(232, 230, 225, .58);
+            --line: rgba(232, 230, 225, .14);
+        }
+
+        * { box-sizing: border-box; }
+
+        html {
+            background: var(--black);
+            scroll-behavior: auto;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+            background: var(--black);
+            color: var(--silver);
+            font-family: 'DM Sans', sans-serif;
+        }
+
+        ::selection {
+            background: var(--gold);
+            color: var(--black);
+        }
+
+        .eyebrow {
+            font-size: 10px;
+            letter-spacing: .2em;
+            text-transform: uppercase;
+        }
+
+        .font-display { font-family: 'Playfair Display', serif; }
+        .gold { color: var(--gold); }
+
+        .loader {
+            position: fixed;
+            z-index: 100;
+            inset: 0;
+            display: grid;
+            place-items: center;
+            background: var(--black);
+        }
+
+        .loader-name {
+            color: var(--gold);
+            font: 500 clamp(2rem, 5vw, 4rem) 'Playfair Display', serif;
+            letter-spacing: .04em;
+        }
+
+        .site-header {
+            position: absolute;
+            z-index: 10;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 28px 6vw;
+            border-bottom: 1px solid rgba(255,255,255,.12);
+        }
+
+        .nav-link { transition: color .35s ease; }
+        .nav-link:hover { color: var(--gold); }
+
+        /* Anatomy of a suit */
+        .hero-pin {
+            position: relative;
+            height: 400vh;
+            background: #0a0a0a;
+            overflow: clip;
+        }
+
+        .sticky-container {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            height: 100svh;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background:
+                radial-gradient(ellipse at center, rgba(40, 37, 29, .28), transparent 55%),
+                #0a0a0a;
+        }
+
+        .hero-title {
+            position: absolute;
+            z-index: 5;
+            left: 0;
+            right: 0;
+            top: 50%;
+            margin: 0;
+            padding: 0 20px;
+            color: var(--gold);
+            text-align: center;
+            font-size: clamp(3.3rem, 9vw, 8.5rem);
+            font-weight: 400;
+            line-height: 1;
+            letter-spacing: -.045em;
+            transform: translateY(-50%);
+            pointer-events: none;
+        }
+
+        .suit-image {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            height: 85vh;
+            height: 85svh;
+            max-width: min(90vw, 720px);
+            width: auto;
+            object-fit: contain;
+            object-position: center;
+            border-radius: 12px;
+            box-shadow: 0 28px 80px rgba(0, 0, 0, .56);
+            will-change: transform, opacity;
+        }
+
+        #shirt {
+            z-index: 1;
+            transform: translate(-50%, -50%) scale(.85);
+        }
+
+        #waistcoat {
+            z-index: 2;
+            transform: translate(-50%, -50%);
+        }
+
+        #jacket {
+            z-index: 3;
+            transform: translate(-50%, -50%) scale(1.5);
+        }
+
+        .hero-kicker {
+            position: absolute;
+            z-index: 6;
+            bottom: 34px;
+            left: 0;
+            width: 100%;
+            color: rgba(232, 230, 225, .58);
+            text-align: center;
+        }
+
+        .craft {
+            position: relative;
+            min-height: 85vh;
+            display: grid;
+            place-items: center;
+            overflow: hidden;
+            padding: 120px 24px;
+            background: radial-gradient(ellipse at center, #191815 0%, #0a0a0a 67%);
+        }
+
+        .craft-word {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: rgba(212,175,55,.045);
+            font: 500 clamp(6rem, 21vw, 23rem)/.8 'Playfair Display', serif;
+            letter-spacing: -.07em;
+            white-space: nowrap;
+            pointer-events: none;
+            will-change: transform;
+        }
+
+        .craft-copy {
+            position: relative;
+            z-index: 1;
+            max-width: 900px;
+            text-align: center;
+        }
+
+        .craft-copy h2 {
+            margin: 24px 0;
+            font-size: clamp(2.8rem, 7vw, 6.5rem);
+            line-height: 1.08;
+            font-weight: 400;
+        }
+
+        .craft-copy p:last-child {
+            max-width: 510px;
+            margin: 0 auto;
+            color: var(--muted);
+            line-height: 1.9;
+        }
+
+        .collection {
+            position: relative;
+            overflow: hidden;
+            background: #0d0d0c;
+        }
+
+        .collection-heading {
+            min-height: 42vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 90px 8vw 50px;
+        }
+
+        .collection-heading h2 {
+            margin: 18px 0 0;
+            font-size: clamp(3rem, 7vw, 7rem);
+            font-weight: 400;
+            line-height: 1;
+        }
+
+        .collection-viewport { overflow: hidden; }
+
+        .collection-track {
+            display: flex;
+            width: max-content;
+            gap: 24px;
+            padding: 0 8vw 9vh;
+            will-change: transform;
+        }
+
+        .collection-card {
+            position: relative;
+            width: min(64vw, 760px);
+            height: min(69vh, 680px);
+            min-height: 430px;
+            overflow: hidden;
+            border: 1px solid rgba(212,175,55,0);
+            background: #161613;
+            transition: border-color .7s ease;
+        }
+
+        .collection-card:hover { border-color: var(--gold); }
+
+        .collection-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(.72);
+            transform: scale(1.001);
+            transition: transform 1.1s cubic-bezier(.2,.65,.25,1), filter .7s ease;
+        }
+
+        .collection-card:hover img {
+            transform: scale(1.045);
+            filter: brightness(.87);
+        }
+
+        .collection-card::after {
+            content: '';
+            position: absolute;
+            inset: 35% 0 0;
+            background: linear-gradient(0deg, rgba(5,5,5,.88), transparent);
+            pointer-events: none;
+        }
+
+        .card-caption {
+            position: absolute;
+            z-index: 1;
+            left: clamp(22px, 4vw, 54px);
+            right: 24px;
+            bottom: clamp(25px, 4vw, 54px);
+        }
+
+        .card-caption h3 {
+            margin: 12px 0 0;
+            font-size: clamp(2.2rem, 5vw, 4.8rem);
+            font-weight: 400;
+            line-height: 1.05;
+        }
+
+        .booking {
+            padding: 130px 24px 140px;
+            background: #0a0a0a;
+        }
+
+        .booking-inner {
+            max-width: 1120px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr .8fr;
+            gap: 12vw;
+            align-items: start;
+        }
+
+        .booking-copy h2 {
+            margin: 22px 0;
+            font-size: clamp(3.2rem, 6vw, 6.2rem);
+            line-height: 1.02;
+            font-weight: 400;
+        }
+
+        .booking-copy > p:last-child {
+            max-width: 410px;
+            color: var(--muted);
+            line-height: 1.9;
+        }
+
+        .booking-form label {
+            display: block;
+            margin: 0 0 13px;
+            color: var(--muted);
+        }
+
+        .booking-form select {
+            width: 100%;
+            padding: 18px 16px;
+            border: 1px solid var(--line);
+            border-radius: 0;
+            outline: none;
+            background: #10100e;
+            color: var(--silver);
+            font: 15px 'DM Sans', sans-serif;
+            transition: border-color .3s ease;
+        }
+
+        .booking-form select:focus { border-color: var(--gold); }
+
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 27px 0;
+            margin-top: 16px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .price-value {
+            color: var(--gold);
+            font: 500 2rem 'Playfair Display', serif;
+        }
+
+        .pay-button {
+            width: 100%;
+            margin-top: 25px;
+            padding: 19px 20px;
+            border: 1px solid var(--gold);
+            background: var(--gold);
+            color: #11100d;
+            font: 500 10px 'DM Sans', sans-serif;
+            letter-spacing: .18em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: background .35s ease, color .35s ease, transform .35s ease;
+        }
+
+        .pay-button:hover {
+            background: transparent;
+            color: var(--gold);
+            transform: translateY(-2px);
+        }
+
+        .pay-button:disabled {
+            opacity: .6;
+            cursor: wait;
+            transform: none;
+        }
+
+        .payment-status {
+            min-height: 20px;
+            margin-top: 15px;
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        .footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            padding: 28px 6vw;
+            border-top: 1px solid var(--line);
+            background: #080808;
+        }
+
+        @media (max-width: 760px) {
+            .site-header { padding: 20px 22px; }
+            .header-nav { display: none; }
+
+            .suit-image {
+                height: 72vh;
+                height: 72svh;
+                max-width: 94vw;
+            }
+
+            .collection-heading {
+                min-height: 34vh;
+                padding: 80px 24px 36px;
+            }
+
+            .collection-track {
+                gap: 14px;
+                padding: 0 24px 70px;
+            }
+
+            .collection-card {
+                width: 82vw;
+                height: 62vh;
+                min-height: 400px;
+            }
+
+            .booking-inner {
+                grid-template-columns: 1fr;
+                gap: 52px;
+            }
+
+            .booking { padding: 90px 24px 100px; }
+
+            .footer {
+                align-items: flex-start;
+                flex-direction: column;
+                padding: 25px 24px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { scroll-behavior: auto !important; }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="loader" id="loader" aria-label="Loading new Caesar Tailor">
+        <p class="loader-name">new Caesar Tailor</p>
+    </div>
+
+    <header class="site-header flex items-center justify-between">
+        <a href="#home" class="font-display text-xl md:text-2xl" aria-label="new Caesar Tailor home">
+           new Caesar <span class="gold">Tailor</span>
+        </a>
+        <nav class="header-nav flex items-center gap-10 eyebrow text-white/70" aria-label="Main navigation">
+            <a class="nav-link" href="#craft">The craft</a>
+            <a class="nav-link" href="#popular">Popular Picks</a>
+            <a class="nav-link" href="#booking">Appointment</a>
+        </nav>
+        <a href="#booking" class="eyebrow gold border border-[#d4af37]/60 px-4 py-3 transition-colors hover:bg-[#d4af37] hover:text-black">
+            Book a fitting
+        </a>
+    </header>
+
+    <main>
+        <section class="hero-pin" id="home" style="height: 400vh; background: #0a0a0a;" aria-label="The anatomy of a suit">
+            <div class="sticky-container" style="position: sticky; top: 0; height: 100vh; overflow: hidden; display: flex; align-items: center; justify-content: center;">
+                <h1 class="hero-title font-display">new Caesar Tailor</h1>
+
+                <img
+                    id="shirt"
+                    class="suit-image"
+                    src="shirt.png"
+                    alt="White formal shirt"
+                    style="opacity: 0;"
+                >
+                <img
+                    id="waistcoat"
+                    class="suit-image"
+                    src="waistcoat.png"
+                    alt="Formal waistcoat and tie"
+                    style="opacity: 0;"
+                >
+                <img
+                    id="jacket"
+                    class="suit-image"
+                    src="jacket.png"
+                    alt="Formal suit jacket"
+                    style="opacity: 0;"
+                >
+
+                <p class="hero-kicker eyebrow">Scroll to assemble · new Caesar Tailor</p>
+            </div>
+        </section>
+
+        <section class="craft" id="craft">
+            <div class="craft-word" aria-hidden="true">BESPOKE</div>
+            <div class="craft-copy">
+                <p class="eyebrow gold">The new Caesar standard</p>
+                <h2 class="font-display">Every stitch tells a story.<br><em class="gold">Pure Bespoke.</em></h2>
+                <p>Measured by hand, shaped around you, and finished with the quiet confidence of true craftsmanship. Formalwear made to be worn for a lifetime.</p>
+            </div>
+        </section>
+
+        <section class="collection" id="popular">
+            <div class="collection-heading">
+                <p class="eyebrow gold">A study in occasion</p>
+                <h2 class="font-display">Popular Picks</h2>
+                <p class="mt-5 text-white/50">Scroll to explore <span class="gold">—</span> formalwear, made to measure.</p>
+            </div>
+            <div class="collection-viewport">
+                <div class="collection-track">
+                    <article class="collection-card">
+                        <img src="https://images.unsplash.com/photo-1593030736259-22a4505f039a?q=80&w=800" alt="Premium formal coat" loading="lazy">
+                        <div class="card-caption">
+                            <p class="eyebrow gold">01 / The signature</p>
+                            <h3 class="font-display">Premium Coats</h3>
+                        </div>
+                    </article>
+                    <article class="collection-card">
+                        <img src="https://images.unsplash.com/photo-1599839619722-39751411ea63?q=80&w=800" alt="Custom kurta for formal occasions" loading="lazy">
+                        <div class="card-caption">
+                            <p class="eyebrow gold">02 / Quiet distinction</p>
+                            <h3 class="font-display">Custom Kurtas</h3>
+                        </div>
+                    </article>
+                    <article class="collection-card">
+                        <img src="https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=800" alt="Three-piece formal suit" loading="lazy">
+                        <div class="card-caption">
+                            <p class="eyebrow gold">03 / The occasion</p>
+                            <h3 class="font-display">3-Piece Suits</h3>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="booking" id="booking">
+            <div class="booking-inner">
+                <div class="booking-copy">
+                    <p class="eyebrow gold">Your first fitting</p>
+                    <h2 class="font-display">Begin with<br>a measure.</h2>
+                    <p>Choose your garment and secure a personal consultation. Your booking payment is applied toward your final tailoring bill.</p>
+                    <div style="margin-top: 30px; color: var(--muted); font-size: 14px; line-height: 1.8;">
+                        <p style="margin: 0 0 5px;"><strong class="gold">Address:</strong> Shivaji Nagar, Jarimari, Kurla Andheri Link Road, Mumbai, Maharashtra 400072</p>
+                        <p style="margin: 0;"><strong class="gold">Phone:</strong> +91 95942 35499</p>
+                    </div>
+                </div>
+
+                <div>
+                    <form class="booking-form" id="booking-form">
+                        <label class="eyebrow" for="garment">Select your garment</label>
+                        <select id="garment" name="garment">
+                            <option value="1000">Custom Shirt — ₹1,000</option>
+                            <option value="2000">Custom Kurta — ₹2,000</option>
+                            <option value="4000">3-Piece Suit — ₹4,000</option>
+                        </select>
+                    </form>
+                    <div class="price-row">
+                        <span class="eyebrow text-white/55">Booking total</span>
+                        <span class="price-value" id="booking-total">₹2,000</span>
+                    </div>
+                    <button class="pay-button" id="pay-button" type="button">Pay Advance Booking</button>
+                    <p class="payment-status" id="payment-status" aria-live="polite">Secure checkout powered by Razorpay.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <a href="#home" class="font-display text-xl">new Caesar <span class="gold">Tailor</span></a>
+        <p class="eyebrow text-white/40">Shivaji Nagar, Jarimari, Kurla Andheri Link Road, Mumbai — 9594235499</p>
+        <a href="#booking" class="eyebrow gold">Arrange a fitting ↗</a>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/lenis@1.1.20/dist/lenis.min.js"></script>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const lenis = reducedMotion ? null : new Lenis({
+            lerp: 0.075,
+            wheelMultiplier: 0.85
+        });
+
+        if (lenis) {
+            lenis.on('scroll', ScrollTrigger.update);
+            gsap.ticker.add((time) => lenis.raf(time * 1000));
+            gsap.ticker.lagSmoothing(0);
+        }
+
+        const opening = gsap.timeline();
+        opening
+            .to('.loader-name', {
+                autoAlpha: 0,
+                y: -12,
+                duration: .7,
+                delay: 1.5,
+                ease: 'power2.inOut'
+            })
+            .to('#loader', {
+                autoAlpha: 0,
+                duration: .9,
+                ease: 'power2.inOut',
+                onComplete: () => document.getElementById('loader').remove()
+            }, '-=.15');
+
+        if (!reducedMotion) {
+            const suitTimeline = gsap.timeline({
+                scrollTrigger: {
+                    trigger: '.hero-pin',
+                    start: 'top top',
+                    end: 'bottom bottom',
+                    scrub: 1
+                }
+            });
+
+            suitTimeline
+                .to('#shirt', { opacity: 1, scale: 1, duration: 1 }, 0)
+                .fromTo(
+                    '#waistcoat',
+                    { y: '-100vh', opacity: 0 },
+                    { y: '0', opacity: 1, duration: 1 },
+                    1
+                )
+                .fromTo(
+                    '#jacket',
+                    { scale: 1.5, opacity: 0 },
+                    { scale: 1, opacity: 1, duration: 1 },
+                    2
+                )
+                .to('.hero-title', { opacity: 1, y: -20, duration: 1 }, 3);
+
+            gsap.to('.craft-word', {
+                y: -110,
+                ease: 'none',
+                scrollTrigger: {
+                    trigger: '.craft',
+                    start: 'top bottom',
+                    end: 'bottom top',
+                    scrub: 1.4
+                }
+            });
+
+            const track = document.querySelector('.collection-track');
+            const viewport = document.querySelector('.collection-viewport');
+            const getScrollDistance = () => Math.max(0, track.scrollWidth - viewport.clientWidth);
+
+            if (getScrollDistance() > 0) {
+                gsap.to(track, {
+                    x: () => -getScrollDistance(),
+                    ease: 'none',
+                    scrollTrigger: {
+                        trigger: '.collection',
+                        start: 'top top',
+                        end: () => `+=${getScrollDistance()}`,
+                        pin: true,
+                        scrub: 1.25,
+                        invalidateOnRefresh: true,
+                        anticipatePin: 1
+                    }
+                });
+            }
+        } else {
+            gsap.set('#shirt', { opacity: 1, scale: 1 });
+            gsap.set('#waistcoat', { opacity: 1, y: 0 });
+            gsap.set('#jacket', { opacity: 1, scale: 1 });
+            gsap.set('.hero-title', { opacity: 1, y: -20 });
+        }
+
+        const garmentSelect = document.getElementById('garment');
+        const bookingTotal = document.getElementById('booking-total');
+        const payButton = document.getElementById('pay-button');
+        const paymentStatus = document.getElementById('payment-status');
+        const formatINR = new Intl.NumberFormat('en-IN', {
+            style: 'currency',
+            currency: 'INR',
+            maximumFractionDigits: 0
+        });
+
+        garmentSelect.addEventListener('change', () => {
+            bookingTotal.textContent = formatINR.format(Number(garmentSelect.value));
+        });
+
+        payButton.addEventListener('click', () => {
+            if (typeof Razorpay === 'undefined') {
+                paymentStatus.textContent = 'Razorpay could not load. Please check your connection and try again.';
+                return;
+            }
+
+            const amountRupees = Number(garmentSelect.value);
+            const selectedGarment = garmentSelect.options[garmentSelect.selectedIndex].text.split(' — ')[0];
+
+            const checkout = new Razorpay({
+                key: 'rzp_test_1DP5mmOlF5G5ag',
+                amount: amountRupees * 100,
+                currency: 'INR',
+                name: 'new Caesar Tailor',
+                description: `${selectedGarment} booking`,
+                prefill: { name: '', email: '', contact: '' },
+                notes: { garment: selectedGarment },
+                theme: { color: '#d4af37' },
+                handler: () => {
+                    paymentStatus.textContent = 'Payment received. new Caesar Tailor will be in touch to arrange your fitting.';
+                },
+                modal: {
+                    ondismiss: () => {
+                        paymentStatus.textContent = 'Checkout closed. Your selection is still saved.';
+                    }
+                }
+            });
+
+            checkout.on('payment.failed', (response) => {
+                paymentStatus.textContent = response.error.description || 'Payment failed. Please try again.';
+            });
+
+            checkout.open();
+        });
+
+        window.addEventListener('load', () => ScrollTrigger.refresh());
+        window.addEventListener('resize', () => ScrollTrigger.refresh());
+    </script>
+</body>
+</html>
